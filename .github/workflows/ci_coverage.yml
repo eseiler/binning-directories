@@ -107,7 +107,7 @@ jobs:
                 --output ${{ github.workspace }}/build/coverage_report.xml
 
       - name: Submit coverage report
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ${{ github.workspace }}/build/coverage_report.xml
           root_dir: ${{ github.workspace }}/raptor
