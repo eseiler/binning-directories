@@ -50,6 +50,14 @@ inputs:
     inputBinding:
       prefix: --output
 
+  false_positive_rate:
+    type: double?
+    label: The false positive rate used for building the index.
+    doc: |
+      Default: 0.05. Value must be in range [0,1]
+    inputBinding:
+      prefix: --fpr
+
 hints:
   SoftwareRequirement:
     packages:
@@ -58,6 +66,20 @@ hints:
         version: [ "2.0.0"]
   DockerRequirement:
     dockerPull: quay.io/biocontainers/raptor:2.0.0--h19e8d03_1
+  cwltool:ParameterRestrictions:
+    restrictions:
+      kmer_size:
+        - class: intInterval
+          low: 0
+          high: 32  # inclusive by default
+      index_size:
+        - class: regex
+          pattern: "\d*[kmgt]"
+      false_positive_rate:
+        - class: interval
+          low: 0
+          high: 1
+          high_inclusive: false
 
 requirements:
   EnvVarRequirement:
@@ -92,3 +114,6 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.output_name)
+
+$namespaces:
+  cwltool: "http://commonwl.org/cwltool#"

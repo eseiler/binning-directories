@@ -21,13 +21,6 @@ inputs:
     format:
       - edam:format_1929  # FASTA
       - edam:format_1930  # FASTQ
-  false_positive_rate:
-    type: double?
-    label: The false positive rate used for building the index.
-    doc: |
-      Default: 0.05. Value must be in range [0,1]
-    inputBinding:
-      prefix: --fpr
   error_tolerance:
     type: int?
     label: The number of errors to tolerate
@@ -42,7 +35,7 @@ inputs:
     inputBinding:
       prefix: --output
   p_max:
-    type: double
+    type: double?
     label: Used in the dynamic thresholding
     doc: |
       The higher p_max, the lower the threshold. Default: 0.15. Value must be in
@@ -55,6 +48,16 @@ hints:
     packages:
       raptor:
         specs: [ https://bio.tools/raptor ]
+  cwltool:ParameterRestrictions:
+    restrictions:
+      error_tolerance:
+        - class: intInterval
+          low: 0
+          # high default value is positive infinity
+      p_max:
+        - class: interval
+          low: 0
+          high: 1
 
 requirements:
   EnvVarRequirement:
@@ -76,3 +79,4 @@ outputs:
 
 $namespaces:
   edam: http://edamontology.org/
+  cwltool: "http://commonwl.org/cwltool#"
